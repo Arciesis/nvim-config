@@ -1,3 +1,4 @@
+
 local lsp_plugins = {
     -- Mason init
     {
@@ -65,19 +66,20 @@ local lsp_plugins = {
                     luasnip.lsp_expand(args.body)
                  end,
               },
+
               completion = {
                  completeopt = "menu,menuone,noinsert",
               },
+
               mapping = cmp.mapping.preset.insert({
-                 ["<C-n>"] = cmp.mapping.select_next_item(),
-                 ["<C-p>"] = cmp.mapping.select_prev_item(),
-                 ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-                 ["<C-f>"] = cmp.mapping.scroll_docs(4),
+                 ["<C-f>"] = cmp.mapping.select_next_item(),
+                 ["<C-b>"] = cmp.mapping.select_prev_item(),
                  ["<C-Space>"] = cmp.mapping.complete({}),
                  ["<CR>"] = cmp.mapping.confirm({
                     behavior = cmp.ConfirmBehavior.Replace,
                     select = true,
                  }),
+
                  ["<Tab>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                        cmp.select_next_item()
@@ -97,88 +99,32 @@ local lsp_plugins = {
                     end
                  end, { "i", "s" }),
               }),
+
               sources = {
                  { name = "nvim_lsp" },
                  { name = "luasnip" },
                  { name = "path" },
               }
            })
-           --  cmp.setup(opts)
-           --  opts.window = {
-           --  --  completion = cmp.config.window.bordered(),
-           --  documentation = {
-           --  border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-           --  },
-           --  }
-
-           --  opts.mapping = cmp.mapping.preset.insert({
-              --  ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-              --  ['<C-f>'] = cmp.mapping.scroll_docs(4),
-              --  ["<c-'>"] = cmp.mapping.complete(),
-              --  ["<c-a>"] = cmp.mapping.abort(),
-              --  ["<CR>"] = cmp.mapping.confirm({select = true}),
-           --  })
-
-           --  opts.formatting = {
-              --  fields = { "kind", "abbr", "menu" },
-              --  format = function(entry, vim_item)
-                 --  -- Kind icons
-                 --  --  vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
-                 --  -- vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
-                 --  vim_item.menu = ({
-                    --  nvim_lsp = "[LSP]",
-                    --  luasnip = "[Snippet]",
-                    --  buffer = "[Buffer]",
-                    --  path = "[Path]",
-                 --  })[entry.source.name]
-                 --  return vim_item
-              --  end,
-           --  }
-
-           --  opts.sources = cmp.config.sources({
-              --  {name = "nvim_lsp"},
-              --  {name = "luasnip"},
-              --  {name = "buffer"},
-              --  {name = "buffer"},
-           --  })
-
-           --  cmp.setup.filetype("gitcommit", {
-              --  sources = cmp.config.sources({
-                 --  {name = "git"},
-              --  }, {
-                 --  {name = "buffer"},
-              --  })
-           --  })
-
-            --  cmp.setup.cmdline({"/", "?"},{
-               --  mapping = cmp.mapping.preset.cmdline(),
-               --  sources = {{name = "buffer"}},
-            --  })
-
-            --  cmp.setup.cmdline(":", {
-               --  mapping = cmp.mapping.preset.cmdline(),
-               --  sources = cmp.config.sources({
-                  --  {name = "path"},
-               --  }, {
-                  --  {name = "cmdline"},
-               --  })
-            --  })
-
-
-           --  local capabilities = require("cmp_nvim_lsp").default_capabilities()
-           --  require("lspconfig")["lua_ls"].setup({
-              --  capabilities = capabilities
-           --  })
-
-           --  require("lspconfig")["clangd"].setup({
-              --  capabilities = capabilities
-           --  })
-
-           --  require("lspconfig")["rust_analyzer"].setup({
-              --  capabilities = capabilities
-           --  })
         end
-     }
-  }
+     },
+
+     {
+        "windwp/nvim-autopairs",
+        event = "InsertEnter",
+        config = true
+        -- use opts = {} for passing setup options
+        -- this is equalent to setup({}) function
+     },
+
+}
+
+--  If you want insert `(` after select function or method item
+--  local cmp_autopairs = require("nvim-autopairs.completions.cmp")
+--  local cmp = require("cmp")
+--  cmp.event:on(
+--  "confirm_done",
+--  cmp_autopairs.on_confirm_done()
+--  )
 
 return lsp_plugins
