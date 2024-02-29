@@ -1,1 +1,5 @@
 std="lua53+vim"
+
+[lints]
+high_cyclomatic_complexity = "warn"
+

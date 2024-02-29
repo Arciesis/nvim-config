@@ -85,6 +85,8 @@ return {
                 name = "LSP",
                 -- @TODO: When At least one lsp is configured implement this
                 q = {"<cmd>Telescope quickfixhistory<CR>", "Quickfix history"},
+                l = {"<cmd>Telescope lsp_document_symbols<CR>", "Lint buffer"},
+                d = {"<cmd>Telescope diagnostics bufnr=0<CR>", "Diagnostics"},
             },
 
             d = {
