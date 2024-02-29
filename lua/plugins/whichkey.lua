@@ -58,6 +58,7 @@ return {
             -- Git related
             g = {
                 name = "Git",
+                g = {"<cmd>LazyGit<CR>", "LazyGit"}, -- if its good then all the below code can be remove
                 c = {"<cmd>Telescope git_commits<CR>", "commits" },
                 s = {"<cmd>Telescope git_status<CR>", "status" },
                 b = {"<cmd>Telescope git_branches<CR>", "branches checkout"},
