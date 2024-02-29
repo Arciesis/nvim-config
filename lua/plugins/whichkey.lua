@@ -47,7 +47,7 @@ return {
             t = {
                 name = "Toggle",
                 q = {"<cmd>Telescope quickfix<CR>", "Quickfix"},
-                d = {"<cmd>Telescope treesitter<CR>", "Doc preview"},
+                t = {"<cmd>Telescope treesitter<CR>", "Doc preview"},
                 f = {"<cmd>ToggleTerm size=50 dir=git_dir direction=float<CR>", "Float terminal"},
                 r = {"<cmd>ToggleTerm size=50 dir=git_dir direction=vertical<CR>", "Right terminal"},
             },
@@ -61,6 +61,13 @@ return {
                 -- @TODO: When At least one lsp is configured implement this
                 q = {"<cmd>Telescope quickfixhistory<CR>", "Quickfix history"},
             },
+
+            d = {
+               name = "DocsView",
+               t = {"<cmd>DocsViewToggle<CR>", "Toggle"},
+               u = {"<cmd>DocsViewUpdate<CR>", "Update"},
+            },
+
         }, {prefix = "<leader>"})
     end,
 }

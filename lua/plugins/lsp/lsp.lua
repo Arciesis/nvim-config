@@ -3,6 +3,7 @@ local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protoco
 local opt = vim.opt
 local api = vim.api
 
+-- FIXME: some of the key mappings seems to be broken
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap = true, silent = true }
