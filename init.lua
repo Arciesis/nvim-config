@@ -17,3 +17,4 @@ require("utils")
 _G.set_terminal_keymaps()
 
 require("lazy").setup("plugins")
+require("telescope").load_extension("fzf")
