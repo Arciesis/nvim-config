@@ -13,7 +13,6 @@ vim.opt.rtp:prepend(lazypath)
 
 
 require("options")
-
 require("utils")
 _G.set_terminal_keymaps()
 
