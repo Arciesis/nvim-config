@@ -417,4 +417,18 @@ function M.strip_archive_subpath(path)
   return path
 end
 
+
+function M.set_filetype_indent(ft, settings)
+   local shiftwidth, softstoptab = settings.shiftwidth, settings.shiftwidth
+   vim.cmd(
+      string.format(
+         "autocmd FileType %s set shiftwidth=%d softstoptab=%d",
+         ft,
+         shiftwidth,
+         softstoptab
+      )
+   )
+end
+
+
 return M
