@@ -18,3 +18,16 @@ _G.set_terminal_keymaps()
 
 require("lazy").setup("plugins")
 require("telescope").load_extension("fzf")
+
+
+-- TODO: Add a git manager into nvim
+-- TODO: Check telescope ui select
+-- TODO: read `:h vim.lsp.buf` and make all the shortcut I need
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "lua",
+	callback = function()
+		vim.opt_local.shiftwidth = 3
+		vim.opt_local.tabstop = 3
+	end
+})
