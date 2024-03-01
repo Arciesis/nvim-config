@@ -47,6 +47,40 @@ local dap_config = {
             },
          },
       }
+
+      dap.configurations.lua = {
+         {
+            name = "Current file (local-lua-dgb, lua)",
+            type = "local-lua",
+            request = "launch",
+            cwd = "${workspaceFolder}",
+            program = {
+               lua = "lua", -- TODO make this auto set with the current var of luaver or with a worspace setting (maybe a session)
+               file = "${file}"
+            },
+            args = {},
+         }
+      }
+
+      dap.adapters["local-lua"] = {
+         type = "executable",
+         command = "node",
+         args = {
+            "/home/arciesis/git/local-lua-debugger-vscode/extension/debugAdapter.js",
+         },
+         enrich_config = function(config, on_config)
+            if not config["extensionPath"] then
+               local c = vim.deepcopy(config)
+               c.extensionPath = "/home/arciesis/git/local-lua-debugger-vscode/"
+               on_config(c)
+            else
+               on_config(config)
+            end
+         end
+      }
+
+      local vscode = require("dap.ext.vscode")
+      vscode.load_launchjs(vim.fn.getcwd().."/launch.json", {lua_local = {"lua"}})
    end
 
 

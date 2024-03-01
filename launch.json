@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "lua-local",
+            "request": "launch",
+            "name": "Debug Lua",
+            "program": {
+                "lua": "lua",
+                "file": "init.lua"
+            }
+        }
+    ]
+}
+
