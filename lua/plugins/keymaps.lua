@@ -70,6 +70,17 @@ local keymaps = {
             ["a"] = { function() require("harpoon"):list():append() end, "Add to harpoon", noremap = false },
          },
 
+         -- Trouble related
+         t = {
+            name = "Trouble",
+            x = {function() require("trouble").toggle() end, "Toggle"},
+            w = {function() require("trouble").toggle("workspace_diagnostics") end, "workspace diag"},
+            d = {function() require("trouble").toggle("document_diagnostics") end, "Document diag"},
+            q = {function() require("trouble").toggle("quickfix") end, "Quickfix"},
+            l = {function() require("trouble").toggle("localist") end, "loclist"},
+         },
+         ["gR"] = {function() require("trouble").toggle("lsp_references") end, "Lsp reference"},
+
          -- Harpoon related
          ["<c-e>"] = { function() require("harpoon").ui:toggle_quick_menu(require("harpoon"):list()) end, "Toggle harpoon", noremap = true },
          ["<c-p>"] = { function() require("harpoon"):list():prev() end, "Previous harpoon" },

@@ -23,8 +23,6 @@ require("telescope").load_extension("fzf")
 -- TODO: setup a todo list generator (maybe check telescope)
 -- TODO: implement TSUpdate for Treesitter
 -- TODO: configure Treesitter at least for lua and c/cpp
--- TODO: check linters (e.g: selene) integration with none-ls
--- TODO: check trouble.nvim
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "lua",
