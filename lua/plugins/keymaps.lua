@@ -19,7 +19,7 @@ local keymaps = {
                c = { "<cmd>Telescope command_history last_sortused=true<CR>", "Command History" },
                g = { "<cmd>Telescope git_files<cr>", "Find Files (git-files)" },
                r = { "<cmd>Telescope oldfiles<CR>", "Recent" },
-               n = { "<cmd>enew<CR>", "New file" },
+               n = { "<cmd>new<CR>", "New file" },
                w = { "<cmd>Telescope live_grep<CR>", "Find egrep" },
             },
 
@@ -62,9 +62,35 @@ local keymaps = {
             },
 
             d = {
-               name = "DocsView",
-               t = { "<cmd>DocsViewToggle<CR>", "Toggle" },
-               u = { "<cmd>DocsViewUpdate<CR>", "Update" },
+               --  name = "DocsView",
+               --  t = { "<cmd>DocsViewToggle<CR>", "Toggle" },
+               --  u = { "<cmd>DocsViewUpdate<CR>", "Update" },
+
+               name = "Debugger",
+               b = { function() require("dap").toggle_breakpoint() end, "Breakpoint toggle" },
+               c = { function() require("dap").continue() end, "Continue exec/Launch" },
+               i = { function() require("dap").step_into() end, "Step into" },
+               o = { function() require("dap").step_over() end, "Step over" },
+               t = { function() require("dap").step_out() end, "Step out" },
+               r = { function() require("dap").repl_open() end, "Repl Open" },
+               l = { function() require("dap").run_last() end, "Run last" },
+               h = { function() require("dap.ui.widgets").hover() end, "Hover" },
+               p = { function() require("dap.ui.widgets").preview() end, "Preview" },
+               f = {
+                  function()
+                     local widgets = require("dap.ui.widgets")
+                     widgets.centerer_float(widgets.frames)
+                  end,
+                  "Floating frame",
+               },
+
+               s = {
+                  function()
+                     local widgets = require("dap.ui.widgets")
+                     widgets.centered_float(widgets.scopes)
+                  end,
+                  "Floating scope"
+               },
             },
 
             ["a"] = { function() require("harpoon"):list():append() end, "Add to harpoon", noremap = false },
@@ -73,15 +99,15 @@ local keymaps = {
          -- Trouble related
          t = {
             name = "Trouble",
-            x = {function() require("trouble").toggle() end, "Toggle"},
-            w = {function() require("trouble").toggle("workspace_diagnostics") end, "workspace diag"},
-            d = {function() require("trouble").toggle("document_diagnostics") end, "Document diag"},
-            q = {function() require("trouble").toggle("quickfix") end, "Quickfix"},
-            l = {function() require("trouble").toggle("localist") end, "loclist"},
-            t = {"<cmd>TodoTrouble<CR>", "Trouble todo's"},
-            s = {"<cmd>TodoTelescope<CR>", "Telescope todo's"},
+            x = { function() require("trouble").toggle() end, "Toggle" },
+            w = { function() require("trouble").toggle("workspace_diagnostics") end, "workspace diag" },
+            d = { function() require("trouble").toggle("document_diagnostics") end, "Document diag" },
+            q = { function() require("trouble").toggle("quickfix") end, "Quickfix" },
+            l = { function() require("trouble").toggle("localist") end, "loclist" },
+            t = { "<cmd>TodoTrouble<CR>", "Trouble todo's" },
+            s = { "<cmd>TodoTelescope<CR>", "Telescope todo's" },
          },
-         ["gR"] = {function() require("trouble").toggle("lsp_references") end, "Lsp reference"},
+         ["gR"] = { function() require("trouble").toggle("lsp_references") end, "Lsp reference" },
 
          -- Harpoon related
          ["<c-e>"] = { function() require("harpoon").ui:toggle_quick_menu(require("harpoon"):list()) end, "Toggle harpoon", noremap = true },
