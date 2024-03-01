@@ -28,3 +28,5 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt_local.tabstop = 3
 	end
 })
+
+--  require("lua-config")

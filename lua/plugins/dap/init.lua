@@ -25,11 +25,13 @@ local dap_config = {
          dapui.close()
       end
 
+
+      ----------------- C/C++/Rust config -------------------
       -- C/C++/Rust debug via gdb config
       dap.adapters.gdb = {
          type = "executable",
          command = "gdb",
-         args = {"-i", "dap"}, -- TODO verify that the arguments are corrects
+         args = {"-i", "dap"}, -- TODO: verify that the arguments are corrects
       }
 
       dap.configurations.c = {
@@ -48,6 +50,7 @@ local dap_config = {
          },
       }
 
+      ----------------- Lua config -------------------
       dap.configurations.lua = {
          {
             name = "Current file (local-lua-dgb, lua)",

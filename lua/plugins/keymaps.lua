@@ -39,7 +39,7 @@ local keymaps = {
                --  b = {"<cmd>Telescope git_branches<CR>", "branches checkout"},
             },
             -- Toggle related
-            -- FIXME: reafcto that thing maybe not do a toggle but each plugin that require a toggle need to have a t mapping
+            -- FIXME: refacto that thing maybe not do a toggle but each plugin that require a toggle need to have a t mapping
             t = {
                name = "Toggle",
                q = { "<cmd>Telescope quickfix<CR>", "Quickfix" },
@@ -91,6 +91,7 @@ local keymaps = {
                   end,
                   "Floating scope"
                },
+               q = {function() require("dapui").dap.terminate()end, "Quit"},
             },
 
             ["a"] = { function() require("harpoon"):list():append() end, "Add to harpoon", noremap = false },
