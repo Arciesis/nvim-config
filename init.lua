@@ -11,7 +11,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-
 require("options")
 require("utils")
 _G.set_terminal_keymaps()
@@ -20,9 +19,10 @@ require("lazy").setup("plugins")
 require("telescope").load_extension("fzf")
 
 
--- TODO: Add a git manager into nvim
 -- TODO: Check telescope ui select
 -- TODO: read `:h vim.lsp.buf` and make all the shortcut I need
+-- TODO: setup dap for c/cpp, check nvim-dap, nvim-dap-ui  plus a c/cpp dap
+-- setup a todo list generator (maybe check)
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "lua",
