@@ -13,7 +13,7 @@ return {
 
       config = function(_, _)
          local cmp = require("cmp")
-         --  local luasnip = require("luasnip")
+         local luasnip = require("luasnip")
          require("luasnip.loaders.from_vscode").lazy_load()
          require("luasnip").config.setup({})
 

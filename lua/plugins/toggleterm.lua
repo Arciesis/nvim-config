@@ -2,7 +2,7 @@ return {
     "akinsho/toggleterm.nvim",
     tag = "v2.10.0",
     opts = {
-        terminal_mappings = false,
+        terminal_mappings = true,
         close_on_exit = true,
         shell = "bash",
         auto_scroll = true,
