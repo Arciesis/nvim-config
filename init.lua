@@ -21,8 +21,6 @@ require("telescope").load_extension("fzf")
 -- TODO: Check telescope ui select
 -- TODO: setup dap for c/cpp, check nvim-dap, nvim-dap-ui  plus a c/cpp dap
 -- TODO: setup a todo list generator (maybe check telescope)
--- TODO: implement TSUpdate for Treesitter
--- TODO: configure Treesitter at least for lua and c/cpp
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "lua",
