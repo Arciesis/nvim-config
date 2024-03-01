@@ -19,7 +19,7 @@ local keymaps = {
                c = { "<cmd>Telescope command_history last_sortused=true<CR>", "Command History" },
                g = { "<cmd>Telescope git_files<cr>", "Find Files (git-files)" },
                r = { "<cmd>Telescope oldfiles<CR>", "Recent" },
-               n = { "<cmd>new<CR>", "New file" },
+               n = { "<cmd>enew<CR>", "New file" },
                w = { "<cmd>Telescope live_grep<CR>", "Find egrep" },
             },
 
@@ -78,6 +78,8 @@ local keymaps = {
             d = {function() require("trouble").toggle("document_diagnostics") end, "Document diag"},
             q = {function() require("trouble").toggle("quickfix") end, "Quickfix"},
             l = {function() require("trouble").toggle("localist") end, "loclist"},
+            t = {"<cmd>TodoTrouble<CR>", "Trouble todo's"},
+            s = {"<cmd>TodoTelescope<CR>", "Telescope todo's"},
          },
          ["gR"] = {function() require("trouble").toggle("lsp_references") end, "Lsp reference"},
 
