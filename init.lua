@@ -13,16 +13,16 @@ vim.opt.rtp:prepend(lazypath)
 
 require("options")
 require("utils")
-_G.set_terminal_keymaps()
 
 require("lazy").setup("plugins")
 require("telescope").load_extension("fzf")
 
 
 -- TODO: Check telescope ui select
--- TODO: read `:h vim.lsp.buf` and make all the shortcut I need
 -- TODO: setup dap for c/cpp, check nvim-dap, nvim-dap-ui  plus a c/cpp dap
--- setup a todo list generator (maybe check)
+-- TODO: setup a todo list generator (maybe check telescope)
+-- TODO: implement TSUpdate for Treesitter
+-- TODO: configure Treesitter at leat for lua and c/cpp
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "lua",
