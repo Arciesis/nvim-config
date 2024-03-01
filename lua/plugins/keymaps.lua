@@ -19,7 +19,7 @@ local keymaps = {
                c = { "<cmd>Telescope command_history last_sortused=true<CR>", "Command History" },
                g = { "<cmd>Telescope git_files<cr>", "Find Files (git-files)" },
                r = { "<cmd>Telescope oldfiles<CR>", "Recent" },
-               n = { "<cmd>enew<CR>", "New file" },
+               n = { "<cmd>new<CR>", "New file" },
                w = { "<cmd>Telescope live_grep<CR>", "Find egrep" },
             },
 
@@ -39,7 +39,7 @@ local keymaps = {
                --  b = {"<cmd>Telescope git_branches<CR>", "branches checkout"},
             },
             -- Toggle related
-            -- FIXME: reafcto that thing mabe not do a toggle but each plugin that require a toggle need to have a t mapping
+            -- FIXME: reafcto that thing maybe not do a toggle but each plugin that require a toggle need to have a t mapping
             t = {
                name = "Toggle",
                q = { "<cmd>Telescope quickfix<CR>", "Quickfix" },
@@ -56,8 +56,8 @@ local keymaps = {
                name = "LSP",
                -- @TODO: When At least one lsp is configured implement this
                h = { "<cmd>Telescope quickfixhistory<CR>", "Quickfix history" },
-               l = { "<cmd>Telescope lsp_document_symbols<CR>", "Lint buffer" },               -- Might be usefull but I'm not sure
-               e = { function() vim.diagnostic.open_float({}) end, "Open diagnostic window" }, -- is it really usefull ???
+               l = { "<cmd>Telescope lsp_document_symbols<CR>", "Lint buffer" },               -- Might be useful but I'm not sure
+               e = { function() vim.diagnostic.open_float({}) end, "Open diagnostic window" }, -- is it really useful ???
                q = { function() vim.diagnostic.setloclist({}) end, "don't know" },
             },
 
@@ -100,7 +100,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder,
          { buffer = opts.buffer, desc = "Add workspace" })
       vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder,
-         { buffer = opts.buffer, desc = "Remove worspace" })
+         { buffer = opts.buffer, desc = "Remove workspace" })
       vim.keymap.set('n', '<leader>wl', function()
          print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
       end, { buffer = opts.buffer, desc = "List workspaces" })
@@ -110,7 +110,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = opts.buffer, desc = "Go to references" })
       vim.keymap.set('n', '<leader>cf', function()
          vim.lsp.buf.format { async = true }
-      end, { buffer = opts.buffer, desc = "Fornat" })
+      end, { buffer = opts.buffer, desc = "Format" })
    end,
 })
 
