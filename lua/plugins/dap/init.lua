@@ -55,7 +55,7 @@ local dap_config = {
             request = "launch",
             cwd = "${workspaceFolder}",
             program = {
-               lua = "lua", -- TODO make this auto set with the current var of luaver or with a worspace setting (maybe a session)
+               lua = "lua", -- TODO: make this auto set with the current var of luaver or with a workspace setting (maybe a session)
                file = "${file}"
             },
             args = {},
