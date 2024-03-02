@@ -84,6 +84,30 @@ local dap_config = {
 
       local vscode = require("dap.ext.vscode")
       vscode.load_launchjs(vim.fn.getcwd().."/launch.json", {lua_local = {"lua"}})
+
+      ------------- Emebedded C/C++ config ---------------------------------------
+      --
+      dap.adapters.gdb = {
+         type = "executable",
+         command = "gdb",
+         args = {"-i", "dap"}, -- TODO: verify that the arguments are corrects
+      }
+
+      dap.configurations.c = {
+         {
+            name = "launch gdb",
+            type = "gdb",
+            request = "launch",
+            program = function()
+               return vim.fn.input("path to executable: ", vim.fn.getcwd().."/".."file")
+            end,
+            cwd = "${workspaceFolder}",
+            stopAtBeginninfOfMainSubProgram = false,
+            options = {
+               source_filetype = "c"
+            },
+         },
+      }
    end
 
 
