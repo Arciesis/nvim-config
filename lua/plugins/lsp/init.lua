@@ -21,7 +21,7 @@ local lsp_plugins = {
 
       config = function(_, _)
          require("mason-lspconfig").setup({
-            ensure_installed = {"lua_ls", "rust_analyzer", "clangd"},
+            ensure_installed = {"lua_ls", "rust_analyzer"},
          })
          require("lspconfig")
       end,
@@ -36,6 +36,18 @@ local lsp_plugins = {
 
       config = function(_, opts)
          require("lspconfig").lua_ls.setup(opts)
+         require("lspconfig").ccls.setup({
+            init_options = {
+               compilationDatabaseDirectory = "build",
+               index ={
+                  threads = 0
+               },
+               single_file_support = true,
+            },
+            clang = {
+               excludeArgs = {"-frouding-math"},
+            },
+         })
       end,
 
    },
