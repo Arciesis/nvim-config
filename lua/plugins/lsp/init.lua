@@ -36,6 +36,7 @@ local lsp_plugins = {
 
       config = function(_, opts)
          require("lspconfig").lua_ls.setup(opts)
+         require("lspconfig").clangd.setup(opts)
       end,
 
    },
