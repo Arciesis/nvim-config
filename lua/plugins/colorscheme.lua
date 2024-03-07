@@ -1,4 +1,6 @@
 return {
 	"tanvirtin/monokai.nvim",
-	opts = {}
+	config = function()
+	  require("monokai").setup({palette = require("monokai").soda})
+	end
 }
