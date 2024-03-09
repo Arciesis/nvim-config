@@ -2,9 +2,11 @@ return {
    'nvim-lualine/lualine.nvim',
    dependencies = { 'nvim-tree/nvim-web-devicons' },
    lazy = false,
-   opts = {
-      options = {
-         theme = "molokai",
-      },
-   },
+   config = function()
+      require("lualine").setup({
+         options = {
+            theme = "molokai",
+         },
+      })
+   end
 }

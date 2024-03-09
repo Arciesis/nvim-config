@@ -12,40 +12,41 @@ local keymaps = {
          -- General
          ["<leader>"] = {
             -- File related
+            ["<leader>"] = {
+               { "<cmd>Telescope find_files<CR>", "Find file" },
+            },
+
             f = {
                name = "File",
-               f = { "<cmd>Telescope find_files<CR>", "Find file" },
                b = { "<cmd>Telescope buffers<CR>", "Buffers" },
                c = { "<cmd>Telescope command_history last_sortused=true<CR>", "Command History" },
                g = { "<cmd>Telescope git_files<cr>", "Find Files (git-files)" },
                r = { "<cmd>Telescope oldfiles<CR>", "Recent" },
-               n = { "<cmd>enew<CR>", "New file" },
+               n = { "<cmd>new<CR>", "New file" },
                w = { "<cmd>Telescope live_grep<CR>", "Find egrep" },
             },
+            c = {
+               name = "Code",
+               -- c = {function()  require("commented").toggle_inline_comment("n") end, "1 line comment"},
 
-            -- Annotations and comments related
-            -- TODO Add a comment method here instead of gcc maybe or reafcto that thing
-            --  c = {
-            --  name = "Comment",
-            --  a = {"<cmd>Neogen<CR>", "Annotations"},
-            --  --  c = {"<cmd>Comment<CR>", "Comment 1 line"},
-            --  },
+
+
+                 -- keybindings = {n = "gc", nl = "gcc"},
+            },
+
             -- Git related
             g = {
                name = "Git",
                g = { "<cmd>LazyGit<CR>", "LazyGit" },
-               --  c = {"<cmd>Telescope git_commits<CR>", "commits" },
-               --  s = {"<cmd>Telescope git_status<CR>", "status" },
-               --  b = {"<cmd>Telescope git_branches<CR>", "branches checkout"},
             },
             -- Toggle related
-            -- FIXME: refacto that thing maybe not do a toggle but each plugin that require a toggle need to have a t mapping
+            -- TODO: refacto that thing maybe not do a toggle but each plugin that require a toggle need to have a t mapping
             t = {
                name = "Toggle",
-               q = { "<cmd>Telescope quickfix<CR>", "Quickfix" },
-               t = { "<cmd>Telescope treesitter<CR>", "Doc preview" },
                f = { "<cmd>ToggleTerm size=50 dir=git_dir direction=float<CR>", "Float terminal" },
                r = { "<cmd>ToggleTerm size=50 dir=git_dir direction=vertical<CR>", "Right terminal" },
+               d = { "<cmd>DocsViewToggle<CR>", "Toggle" },
+               u = { "<cmd>DocsViewUpdate<CR>", "Update" },
             },
             s = {
                name = "Show",
@@ -63,8 +64,6 @@ local keymaps = {
 
             d = {
                --  name = "DocsView",
-               --  t = { "<cmd>DocsViewToggle<CR>", "Toggle" },
-               --  u = { "<cmd>DocsViewUpdate<CR>", "Update" },
 
                name = "Debugger",
                b = { function() require("dap").toggle_breakpoint() end, "Breakpoint toggle" },
@@ -91,7 +90,7 @@ local keymaps = {
                   end,
                   "Floating scope"
                },
-               q = {function() require("dapui").dap.terminate()end, "Quit"},
+               q = { function() require("dapui").dap.terminate() end, "Quit" },
             },
 
             ["a"] = { function() require("harpoon"):list():append() end, "Add to harpoon", noremap = false },
@@ -158,7 +157,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
    pattern = [[term://*]],
    callback = function(evt)
       local opts = { buffer = evt.buf }
-      vim.keymap.set('t', '<esc>', "exit<CR>", opts)
+      vim.keymap.set('t', '<C-q>', [[<C-\><C-n><C-q>]], opts)
       vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
       vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
       vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
