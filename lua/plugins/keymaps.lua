@@ -75,6 +75,12 @@ local keymaps = {
                l = { function() require("dap").run_last() end, "Run last" },
                h = { function() require("dap.ui.widgets").hover() end, "Hover" },
                p = { function() require("dap.ui.widgets").preview() end, "Preview" },
+               u = {
+                  function()
+                     _G.dapRunConfigWithArgs()
+                  end,
+                  "Run args",
+               },
                f = {
                   function()
                      local widgets = require("dap.ui.widgets")
@@ -90,7 +96,7 @@ local keymaps = {
                   end,
                   "Floating scope"
                },
-               q = { function() require("dapui").dap.terminate() end, "Quit" },
+               q = { function() require("dapui").toggle() end, "Quit" },
             },
 
             ["a"] = { function() require("harpoon"):list():append() end, "Add to harpoon", noremap = false },
