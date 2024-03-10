@@ -4,7 +4,7 @@ local project_root = {
   end,
   icon = "",
   cond = hide_in_width,
-  separator = '',
+  separator = ' ',
 }
 
 return {
