@@ -34,13 +34,14 @@ local dap_config = {
          args = {"-i", "dap"}, -- TODO: verify that the arguments are corrects
       }
 
+      -- C
       dap.configurations.c = {
          {
             name = "launch gdb",
             type = "gdb",
             request = "launch",
             program = function()
-               return vim.fn.input("path to executable: ", vim.fn.getcwd().."/".."file")
+               return vim.fn.input("path to executable: ", vim.fn.getcwd().."/".."debug/main")
             end,
             cwd = "${workspaceFolder}",
             stopAtBeginninfOfMainSubProgram = false,
