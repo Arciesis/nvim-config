@@ -58,9 +58,11 @@ return {
             }),
 
             sources = {
-               { name = "nvim_lsp" },
-               { name = "luasnip" },
-               { name = "path" },
+               {name = "cody"},
+               {name = "nvim_lsp"},
+               {name = "ccls"},
+               {name = "luasnip"},
+               {name = "path"},
             }
          })
       end,
