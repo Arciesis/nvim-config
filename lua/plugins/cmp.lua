@@ -38,6 +38,21 @@ return {
                }),
             }),
 
+            formatting = {
+               format = function(entry, vim_item)
+                  vim_item.kind = string.format("%s %s", vim_item.kind, entry.source.name)
+                  vim_item.menu = ({
+                     nvim_lsp = "[LSP]",
+                     luasnip = "[LuaSnip]",
+                     path = "[Path]",
+                     buffer = "[Buffer]",
+                     cmdline = "[Cmdline]",
+                     cody = "[Cody]",
+                  })[entry.source.name]
+                  return vim_item
+               end,
+            },
+
             sources = {
                {name = "cody"},
                {name = "nvim_lsp"},
