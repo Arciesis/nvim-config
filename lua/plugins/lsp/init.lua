@@ -35,7 +35,26 @@ local lsp_plugins = {
       },
 
       config = function(_, opts)
-         require("lspconfig").lua_ls.setup(opts)
+
+         local on_attach = function(client, _)
+            if client.server_capabilities.inlayHintProvider then
+                              vim.lsp.buf.set_inlay_hints({
+                  show_parameter_hints = true,
+                  parameter_hints_prefix = "",
+                  other_hints_prefix = "",
+                  right_align = false,
+                  max_len_align = false,
+                  max_len_align_padding = 1,
+                  max_len_align_prefix = "",
+               })
+            end
+         end
+
+         require("lspconfig").lua_ls.setup({
+            on_attach = on_attach,
+            init_options = opts,
+         })
+
          require("lspconfig").ccls.setup({
             init_options = {
                compilationDatabaseDirectory = "build",
@@ -47,7 +66,9 @@ local lsp_plugins = {
             clang = {
                excludeArgs = {"-frouding-math"},
             },
+            on_attach = on_attach,
          })
+
       end,
 
    },
