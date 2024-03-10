@@ -3,9 +3,10 @@ return {
     config = function() 
        require("commented").setup({
           comment_padding = " ",
-          prefer_block_comment = false,
+          prefer_block_comment = true,
           set_keybindings = true,
           ex_mode_cmd = "Comment",
+          keybindings = {nl = "gcc"},
        })
     end
 }
