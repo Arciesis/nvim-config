@@ -18,8 +18,7 @@ local none_config = {
                nonels.builtins.diagnostics.selene,
                nonels.builtins.formatting.asmfmt,
                nonels.builtins.formatting.astyle.with({filetypes = {"arduino"}}),
-               --  nonels.builtins.formatting.clang_format.
-               nonels.builtins.formatting.cmake_format,
+               nonels.builtins.formatting.clang_format,
                nonels.builtins.formatting.codespell,
                nonels.builtins.formatting.shfmt,
             },

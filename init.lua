@@ -21,6 +21,7 @@ require("telescope").load_extension("fzf")
 -- TODO: setup the ui for dapui with something I like
 -- TODO: setup the dap (dgb) for embedded devices using arm-none-eabi as gdb arguments (How to detect file ?)
 -- TODO: setup inlay hints
+-- TODO: Add cpplint to the stack
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "lua",

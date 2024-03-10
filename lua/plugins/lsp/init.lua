@@ -21,7 +21,7 @@ local lsp_plugins = {
 
       config = function(_, _)
          require("mason-lspconfig").setup({
-            ensure_installed = {"lua_ls", "rust_analyzer"},
+            ensure_installed = {"lua_ls", "rust_analyzer", "clangd"},
          })
          require("lspconfig")
       end,
@@ -36,39 +36,33 @@ local lsp_plugins = {
 
       config = function(_, opts)
 
-         local on_attach = function(client, _)
+         local on_attach = function(client, bufnr)
             if client.server_capabilities.inlayHintProvider then
-                              vim.lsp.buf.set_inlay_hints({
-                  show_parameter_hints = true,
-                  parameter_hints_prefix = "",
-                  other_hints_prefix = "",
-                  right_align = false,
-                  max_len_align = false,
-                  max_len_align_padding = 1,
-                  max_len_align_prefix = "",
-               })
+               vim.lsp.inlay_hint.enable(bufnr, true)
             end
          end
 
-         require("lspconfig").lua_ls.setup({
+         local lspconfig = require("lspconfig")
+
+         lspconfig.lua_ls.setup({
             on_attach = on_attach,
             init_options = opts,
          })
 
-         require("lspconfig").ccls.setup({
+         lspconfig.clangd.setup({
             init_options = {
                compilationDatabaseDirectory = "build",
-               index ={
+               index = {
                   threads = 0
                },
                single_file_support = true,
             },
-            clang = {
-               excludeArgs = {"-frouding-math"},
-            },
             on_attach = on_attach,
          })
 
+         lspconfig.rust_analyzer.setup({
+            on_attach = on_attach,
+         })
       end,
 
    },
