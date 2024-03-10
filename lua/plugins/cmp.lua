@@ -20,13 +20,14 @@ return {
          cmp.setup({
             snippet = {
                expand = function(args)
-                  require("luasnip").lsp_expand(args.body)
+                  luasnip.lsp_expand(args.body)
                end,
             },
 
             completion = {
                completeopt = "menu,menuone,noinsert",
             },
+
 
             mapping = cmp.mapping.preset.insert({
                ["<C-f>"] = cmp.mapping.select_next_item(),
@@ -37,7 +38,7 @@ return {
                   select = true,
                }),
 
-               ["<Tab>"] = cmp.mapping(function(fallback)
+               --[[ ["<Tab>"] = cmp.mapping(function(fallback)
                   if cmp.visible() then
                      cmp.select_next_item()
                   elseif luasnip.expand_or_locally_jumpable() then
@@ -54,7 +55,7 @@ return {
                   else
                      fallback()
                   end
-               end, { "i", "s" }),
+               end, { "i", "s" }), --]]
             }),
 
             sources = {
@@ -63,6 +64,7 @@ return {
                {name = "ccls"},
                {name = "luasnip"},
                {name = "path"},
+               {name = "cmdline"},
             }
          })
       end,
