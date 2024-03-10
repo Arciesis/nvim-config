@@ -22,8 +22,8 @@ local keymaps = {
                c = { "<cmd>Telescope command_history last_sortused=true<CR>", "Command History" },
                g = { "<cmd>Telescope git_files<cr>", "Find Files (git-files)" },
                r = { "<cmd>Telescope oldfiles<CR>", "Recent" },
-               n = { "<cmd>new<CR>", "New file" },
-               w = { "<cmd>Telescope live_grep<CR>", "Find egrep" },
+               n = { "<cmd>enew<CR>", "New file" },
+               e = { "<cmd>Telescope live_grep<CR>", "Find egrep" },
             },
             c = {
                name = "Code",
