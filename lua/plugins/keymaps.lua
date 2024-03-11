@@ -22,7 +22,7 @@ local keymaps = {
                c = { "<cmd>Telescope command_history last_sortused=true<CR>", "Command History" },
                g = { "<cmd>Telescope git_files<cr>", "Find Files (git-files)" },
                r = { "<cmd>Telescope oldfiles<CR>", "Recent" },
-               n = { "<cmd>enew<CR>", "New file" },
+               --  n = { "<cmd>enew<CR>", "New file" },
                e = { "<cmd>Telescope live_grep<CR>", "Find egrep" },
             },
             c = {
@@ -70,7 +70,8 @@ local keymaps = {
                c = { function() require("dap").continue() end, "Continue exec/Launch" },
                i = { function() require("dap").step_into() end, "Step into" },
                o = { function() require("dap").step_over() end, "Step over" },
-               t = { function() require("dap").step_out() end, "Step out" },
+               k = { function() require("dap").step_out() end, "Step out" },
+               t = { function() require("dapui").toggle() end, "Toggle UI" },
                r = { function() require("dap").repl_open() end, "Repl Open" },
                l = { function() require("dap").run_last() end, "Run last" },
                h = { function() require("dap.ui.widgets").hover() end, "Hover" },
