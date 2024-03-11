@@ -20,7 +20,7 @@ return {
          cmp.setup({
             snippet = {
                expand = function(args)
-                  require("luasnip").lsp_expand(args.body)
+                  luasnip.lsp_expand(args.body)
                end,
             },
 
@@ -29,38 +29,37 @@ return {
             },
 
             mapping = cmp.mapping.preset.insert({
-               ["<C-f>"] = cmp.mapping.select_next_item(),
-               ["<C-b>"] = cmp.mapping.select_prev_item(),
+               ["<C-n>"] = cmp.mapping.select_next_item(),
+               ["<C-p>"] = cmp.mapping.select_prev_item(),
                ["<C-Space>"] = cmp.mapping.complete({}),
                ["<CR>"] = cmp.mapping.confirm({
                   behavior = cmp.ConfirmBehavior.Replace,
                   select = true,
                }),
-
-               ["<Tab>"] = cmp.mapping(function(fallback)
-                  if cmp.visible() then
-                     cmp.select_next_item()
-                  elseif luasnip.expand_or_locally_jumpable() then
-                     luasnip.expand_or_jump()
-                  else
-                     fallback()
-                  end
-               end, { "i", "s" }),
-               ["<S-Tab>"] = cmp.mapping(function(fallback)
-                  if cmp.visible() then
-                     cmp.select_prev_item()
-                  elseif luasnip.locally_jumpable(-1) then
-                     luasnip.jump(-1)
-                  else
-                     fallback()
-                  end
-               end, { "i", "s" }),
             }),
 
+            formatting = {
+               format = function(entry, vim_item)
+                  vim_item.kind = string.format("%s %s", vim_item.kind, entry.source.name)
+                  vim_item.menu = ({
+                     nvim_lsp = "[LSP]",
+                     luasnip = "[LuaSnip]",
+                     path = "[Path]",
+                     buffer = "[Buffer]",
+                     --  cmdline = "[Cmdline]",
+                     cody = "[Cody]",
+                  })[entry.source.name]
+                  return vim_item
+               end,
+            },
+
             sources = {
-               { name = "nvim_lsp" },
-               { name = "luasnip" },
-               { name = "path" },
+               {name = "cody"},
+               {name = "nvim_lsp"},
+               {name = "ccls"},
+               {name = "luasnip"},
+               {name = "path"},
+               --  {name = "cmdline"},
             }
          })
       end,

@@ -14,6 +14,12 @@ local lsp_plugins = {
    },
 
    {
+      "folke/neodev.nvim",
+      opts = {},
+
+   },
+
+   {
       "williamboman/mason-lspconfig.nvim",
       dependencies = {
          "williamboman/mason.nvim",
@@ -21,7 +27,7 @@ local lsp_plugins = {
 
       config = function(_, _)
          require("mason-lspconfig").setup({
-            ensure_installed = {"lua_ls", "rust_analyzer"},
+            ensure_installed = { "lua_ls", "rust_analyzer", "clangd" },
          })
          require("lspconfig")
       end,
@@ -35,18 +41,40 @@ local lsp_plugins = {
       },
 
       config = function(_, opts)
-         require("lspconfig").lua_ls.setup(opts)
-         require("lspconfig").ccls.setup({
+         local on_attach = function(client, bufnr)
+            if client.server_capabilities.inlayHintProvider then
+               vim.lsp.inlay_hint.enable(bufnr, true)
+            end
+         end
+
+         local lspconfig = require("lspconfig")
+
+         lspconfig.lua_ls.setup({
+            on_attach = on_attach,
+            init_options = opts,
+            settings = {
+               Lua = {
+                  completion = {
+                     callSnippet = "Replace",
+
+                  },
+               },
+            },
+         })
+
+         lspconfig.clangd.setup({
             init_options = {
                compilationDatabaseDirectory = "build",
-               index ={
+               index = {
                   threads = 0
                },
                single_file_support = true,
             },
-            clang = {
-               excludeArgs = {"-frouding-math"},
-            },
+            on_attach = on_attach,
+         })
+
+         lspconfig.rust_analyzer.setup({
+            on_attach = on_attach,
          })
       end,
 
