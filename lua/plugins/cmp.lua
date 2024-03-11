@@ -46,7 +46,7 @@ return {
                      luasnip = "[LuaSnip]",
                      path = "[Path]",
                      buffer = "[Buffer]",
-                     cmdline = "[Cmdline]",
+                     --  cmdline = "[Cmdline]",
                      cody = "[Cody]",
                   })[entry.source.name]
                   return vim_item
@@ -59,7 +59,7 @@ return {
                {name = "ccls"},
                {name = "luasnip"},
                {name = "path"},
-               {name = "cmdline"},
+               --  {name = "cmdline"},
             }
          })
       end,
