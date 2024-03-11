@@ -2,6 +2,7 @@ local dap_config = {
    "mfussenegger/nvim-dap",
    tags = "0.7.0",
    dependencies = {
+      "jbyuki/one-small-step-for-vimkind",
       "rcarriga/nvim-dap-ui",
    },
 
@@ -55,7 +56,7 @@ local dap_config = {
             dap.run(mConfig)
          end
          )
-      end 
+      end
 
       --  dap.setup()
       dapui.setup()
@@ -73,21 +74,12 @@ local dap_config = {
          dapui.close()
       end --]]
 
-      local function get_args()
-         local args = {}
-         repeat
-            local cpt = 0
-            args[cpt] = vim.fn.input("args: ")
-         until args[cpt] == ""
-         return args
-      end
-
       ----------------- C/C++/Rust config -------------------
       -- C/C++/Rust debug via gdb config
       dap.adapters.gdb = {
          type = "executable",
          command = "gdb",
-         args = {"-i", "dap"}, -- TODO: verify that the arguments are corrects
+         args = {"-i", "dap"},
 
          --[[ enrich_config = function (config, on_config)
             local final_config = vim.deepcopy(config)
@@ -113,37 +105,15 @@ local dap_config = {
       ----------------- Lua config -------------------
       dap.configurations.lua = {
          {
-            name = "Current file (local-lua-dgb, lua)",
-            type = "local-lua",
+            name = "Attach lua to Nvim",
+            type = "nlua",
             request = "launch",
-            cwd = "${workspaceFolder}",
-            program = {
-               lua = "lua", -- TODO: make this auto set with the current var of luaver or with a workspace setting (maybe a session)
-               file = "${file}"
-            },
-            args = {},
          }
       }
 
-      dap.adapters["local-lua"] = {
-         type = "executable",
-         command = "node",
-         args = {
-            "/home/arciesis/git/local-lua-debugger-vscode/extension/debugAdapter.js",
-         },
-         enrich_config = function(config, on_config)
-            if not config["extensionPath"] then
-               local c = vim.deepcopy(config)
-               c.extensionPath = "/home/arciesis/git/local-lua-debugger-vscode/"
-               on_config(c)
-            else
-               on_config(config)
-            end
-         end
-      }
-
-      local vscode = require("dap.ext.vscode")
-      vscode.load_launchjs(vim.fn.getcwd().."/launch.json", {lua_local = {"lua"}})
+      dap.adapters.nlua = function(callback, config)
+         callback({type = "server", host = config.host or "127.0.0.1", port = config.port or 8086})
+      end
    end
 
 

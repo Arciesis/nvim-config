@@ -66,6 +66,7 @@ local keymaps = {
                --  name = "DocsView",
 
                name = "Debugger",
+               a = {function() require("osv").run_this({port = 8086}) end, "Lua Debugger"},
                b = { function() require("dap").toggle_breakpoint() end, "Breakpoint toggle" },
                c = { function() require("dap").continue() end, "Continue exec/Launch" },
                i = { function() require("dap").step_into() end, "Step into" },
