@@ -55,9 +55,11 @@ local lsp_plugins = {
             settings = {
                Lua = {
                   completion = {
-                     callSnippet = "Replace",
-
+                     callSnippet = "Both",
                   },
+                  hint = {
+                     enable = true,
+                  }
                },
             },
          })
