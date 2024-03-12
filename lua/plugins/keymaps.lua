@@ -100,6 +100,11 @@ local keymaps = {
                },
                q = { function() require("dapui").toggle() end, "Quit" },
             },
+            v = {
+               name = "Löve",
+               v = {"<cmd>LoveRun<CR>", "Run Löve"},
+               s = {"<cmd>LoveStop<CR>", "Stop Löve"},
+            },
 
             ["a"] = { function() require("harpoon"):list():append() end, "Add to harpoon", noremap = false },
          },
