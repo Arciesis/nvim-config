@@ -55,7 +55,7 @@ local lsp_plugins = {
             settings = {
                Lua = {
                   completion = {
-                     callSnippet = "Replace",
+                     callSnippet = "Both",
                   },
                   workspace = {
                      library = {
