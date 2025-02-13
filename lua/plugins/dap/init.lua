@@ -3,6 +3,7 @@ local dap_config = {
    tags = "0.7.0",
    dependencies = {
       "jbyuki/one-small-step-for-vimkind",
+      "nvim-neotest/nvim-nio",
       "rcarriga/nvim-dap-ui",
    },
 

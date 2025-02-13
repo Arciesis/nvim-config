@@ -1,135 +1,107 @@
 local keymaps = {
    "folke/which-key.nvim",
    dependencies = {
-      { "ThePrimeagen/harpoon", branch = "harpoon2" },
-      "nvim-telescope/telescope.nvim",
+      { "ThePrimeagen/harpoon",         branch = "harpoon2" },
+      { "nvim-telescope/telescope.nvim" },
    },
    event = "VeryLazy",
    opts = function()
       local wk = require("which-key")
-      return wk.register({
-         ["1"] = "which_key_ignore",
-         -- General
-         ["<leader>"] = {
-            -- File related
-            ["<leader>"] = {
-               { "<cmd>Telescope find_files<CR>", "Find file" },
-            },
+      return wk.add({
+         { "<leader>",         group = "Most used" },
+         { "<leader><leader>", "<cmd>Telescope find_files<CR>",           desc = "Find File",          mode = "n" },
 
-            f = {
-               name = "File",
-               b = { "<cmd>Telescope buffers<CR>", "Buffers" },
-               c = { "<cmd>Telescope command_history last_sortused=true<CR>", "Command History" },
-               g = { "<cmd>Telescope git_files<cr>", "Find Files (git-files)" },
-               r = { "<cmd>Telescope oldfiles<CR>", "Recent" },
-               --  n = { "<cmd>enew<CR>", "New file" },
-               e = { "<cmd>Telescope live_grep<CR>", "Find egrep" },
-            },
-            c = {
-               name = "Code",
-               -- c = {function()  require("commented").toggle_inline_comment("n") end, "1 line comment"},
+         { "<leader>f",        group = "File" },
+         { "<leader>fb",       "<cmd>Telescope buffers<CR>",              desc = "TBuffers" },
+         { "<leader>fg",       "<cmd>Telescope git_files<cr>",            desc = "TGit Files" },
+         { "<leader>fr",       "<cmd>Telescope oldfiles<CR>",             desc = "Recent" },
+         { "<leader>fe",       "<cmd>Telescope live_grep<CR>",            desc = "Find egrep" },
 
+         { "<leader>g",        "<cmd>LazyGit<CR>",                        desc = "LayziGit" },
 
-
-                 -- keybindings = {n = "gc", nl = "gcc"},
-            },
-
-            -- Git related
-            g = {
-               name = "Git",
-               g = { "<cmd>LazyGit<CR>", "LazyGit" },
-            },
-            -- Toggle related
-            -- TODO: refacto that thing maybe not do a toggle but each plugin that require a toggle need to have a t mapping
-            t = {
-               name = "Toggle",
-               f = { "<cmd>ToggleTerm size=50 dir=git_dir direction=float<CR>", "Float terminal" },
-               r = { "<cmd>ToggleTerm size=50 dir=git_dir direction=vertical<CR>", "Right terminal" },
-               d = { "<cmd>DocsViewToggle<CR>", "Toggle" },
-               u = { "<cmd>DocsViewUpdate<CR>", "Update" },
-            },
-            s = {
-               name = "Show",
-               h = { "<cmd>Telescope highlights<CR>", "Highlights" },   -- I think it's useless
-               a = { "<cmd>Telescope autocomands<CR>", "Autocomands" }, -- I think its useless too
-            },
-            l = {
-               name = "LSP",
-               -- @TODO: When At least one lsp is configured implement this
-               h = { "<cmd>Telescope quickfixhistory<CR>", "Quickfix history" },
-               l = { "<cmd>Telescope lsp_document_symbols<CR>", "Lint buffer" },               -- Might be useful but I'm not sure
-               e = { function() vim.diagnostic.open_float({}) end, "Open diagnostic window" }, -- is it really useful ???
-               q = { function() vim.diagnostic.setloclist({}) end, "don't know" },
-            },
-
-            d = {
-               --  name = "DocsView",
-
-               name = "Debugger",
-               a = {function() require("osv").run_this({port = 8086}) end, "Lua Debugger"},
-               b = { function() require("dap").toggle_breakpoint() end, "Breakpoint toggle" },
-               c = { function() require("dap").continue() end, "Continue exec/Launch" },
-               i = { function() require("dap").step_into() end, "Step into" },
-               o = { function() require("dap").step_over() end, "Step over" },
-               k = { function() require("dap").step_out() end, "Step out" },
-               t = { function() require("dapui").toggle() end, "Toggle UI" },
-               r = { function() require("dap").repl_open() end, "Repl Open" },
-               l = { function() require("dap").run_last() end, "Run last" },
-               h = { function() require("dap.ui.widgets").hover() end, "Hover" },
-               p = { function() require("dap.ui.widgets").preview() end, "Preview" },
-               u = {
-                  function()
-                     _G.dapRunConfigWithArgs()
-                  end,
-                  "Run args",
-               },
-               f = {
-                  function()
-                     local widgets = require("dap.ui.widgets")
-                     widgets.centerer_float(widgets.frames)
-                  end,
-                  "Floating frame",
-               },
-
-               s = {
-                  function()
-                     local widgets = require("dap.ui.widgets")
-                     widgets.centered_float(widgets.scopes)
-                  end,
-                  "Floating scope"
-               },
-               q = { function() require("dapui").toggle() end, "Quit" },
-            },
-            v = {
-               name = "Löve",
-               v = {"<cmd>LoveRun<CR>", "Run Löve"},
-               s = {"<cmd>LoveStop<CR>", "Stop Löve"},
-            },
-
-            ["a"] = { function() require("harpoon"):list():append() end, "Add to harpoon", noremap = false },
+         { "<leader>l",        group = "LSP" },
+         { "<leader>lq",       "<cmd>Telescope quickfixhistory<CR>",      desc = "QuickFix History" },
+         { "<leader>ll",       "<cmd>Telescope lsp_document_symbols<CR>", desc = "Lint current Buffer" },
+         {
+            "<leader>ld",
+            function()
+               vim.diagnosstic.open_float({})
+            end,
+            desc = "Line's Diagnostics"
          },
 
-         -- Trouble related
-         t = {
-            name = "Trouble",
-            x = { function() require("trouble").toggle() end, "Toggle" },
-            w = { function() require("trouble").toggle("workspace_diagnostics") end, "workspace diag" },
-            d = { function() require("trouble").toggle("document_diagnostics") end, "Document diag" },
-            q = { function() require("trouble").toggle("quickfix") end, "Quickfix" },
-            l = { function() require("trouble").toggle("localist") end, "loclist" },
-            t = { "<cmd>TodoTrouble<CR>", "Trouble todo's" },
-            s = { "<cmd>TodoTelescope<CR>", "Telescope todo's" },
-         },
-         ["gR"] = { function() require("trouble").toggle("lsp_references") end, "Lsp reference" },
+         { "<leader>v",  group = "Löve" },
+         { "<leader>vr", "<cmd>LoveRun<CR>",      desc = "Run Löve" },
+         { "<leader>vs", "<cmd>LoveStop<CR>",     desc = "Stop Löve" },
 
-         -- Harpoon related
-         ["<c-e>"] = { function() require("harpoon").ui:toggle_quick_menu(require("harpoon"):list()) end, "Toggle harpoon", noremap = true },
-         ["<c-p>"] = { function() require("harpoon"):list():prev() end, "Previous harpoon" },
-         ["<c-n>"] = { function() require("harpoon"):list():next() end, "Next harpoon" },
-         ["<c-d>"] = { function() require("harpoon"):list():clear() end, "Delete harpoon" },
+         { "<leader>d",  group = "Document" },
+         { "<leader>dt", "<cmd>TodoTrouble<CR>",  desc = "Todos" },
+         {
+            "<leader>dd",
+            function()
+               require("trouble").toggle("document_diagnostic")
+            end,
+            desc = "Diagnostics"
+         },
+         {
+            "<leader>dq",
+            function()
+               require("trouble").toggle("quickfix")
+            end,
+            desc = "QuickFix"
+         },
+         {"<leader>dv", "<cmd>DocsViewToggle<CR>", desc = "View Docs" },
+
+         {
+            "<leader>a",
+            function()
+               require("harpoon"):list():add()
+            end,
+            desc = "Add Harpoon"
+         }
       })
-   end,
+   end
 }
+
+
+
+-- name = "Debugger",
+-- a = { function() require("osv").run_this({ port = 8086 }) end, "Lua Debugger" },
+-- b = { function() require("dap").toggle_breakpoint() end, "Breakpoint toggle" },
+-- c = { function() require("dap").continue() end, "Continue exec/Launch" },
+-- i = { function() require("dap").step_into() end, "Step into" },
+-- o = { function() require("dap").step_over() end, "Step over" },
+-- k = { function() require("dap").step_out() end, "Step out" },
+-- t = { function() require("dapui").toggle() end, "Toggle UI" },
+-- r = { function() require("dap").repl_open() end, "Repl Open" },
+-- l = { function() require("dap").run_last() end, "Run last" },
+-- h = { function() require("dap.ui.widgets").hover() end, "Hover" },
+-- p = { function() require("dap.ui.widgets").preview() end, "Preview" },
+-- u = {
+--    function()
+--       _G.dapRunConfigWithArgs()
+--    end,
+--    "Run args",
+-- },
+-- f = {
+--    function()
+--       local widgets = require("dap.ui.widgets")
+--       widgets.centerer_float(widgets.frames)
+--    end,
+--    "Floating frame",
+-- },
+--
+-- s = {
+--    function()
+--       local widgets = require("dap.ui.widgets")
+--       widgets.centered_float(widgets.scopes)
+--    end,
+--    "Floating scope"
+-- },
+-- q = { function() require("dapui").toggle() end, "Quit" },
+
+-- Trouble related
+
 
 -- creation on an autocmd to set the keymaps related to a lsp with wichkey
 -- Use LspAttach autocommand to only map the following keys
@@ -166,19 +138,23 @@ vim.api.nvim_create_autocmd('LspAttach', {
    end,
 })
 
-vim.api.nvim_create_autocmd("TermOpen", {
-   pattern = [[term://*]],
-   callback = function(evt)
-      local opts = { buffer = evt.buf }
-      vim.keymap.set('t', '<C-q>', [[<C-\><C-n><C-q>]], opts)
-      vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
-      vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
-      vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
-      vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
-      vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
-      vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
-   end
+-- Harpoon related
+-- ["<c-e>"] = { function() require("harpoon").ui:toggle_quick_menu(require("harpoon"):list()) end, "Toggle harpoon", noremap = true },
+-- ["<c-p>"] = { function() require("harpoon"):list():prev() end, "Previous harpoon" },
+-- ["<c-n>"] = { function() require("harpoon"):list():next() end, "Next harpoon" },
+-- ["<c-d>"] = { function() require("harpoon"):list():clear() end, "Delete harpoon" },
 
-})
+-- window keymaps
+vim.keymap.set("n", "<C-h>", [[<Cmd>wincmd h<CR>]])
+vim.keymap.set("n", "<C-j>", [[<Cmd>wincmd j<CR>]])
+vim.keymap.set("n", "<C-k>", [[<Cmd>wincmd k<CR>]])
+vim.keymap.set("n", "<C-l>", [[<Cmd>wincmd l<CR>]])
+
+-- TODO: redo => modify these mappings
+vim.keymap.set("n", "+", [[<Cmd>vertical resize -2<CR>]], { noremap = true })
+vim.keymap.set("n", "-", [[<Cmd>vertical resize +2<CR>]], { noremap = true })
+vim.keymap.set("n", "*", [[<Cmd>horizontal resize +2<CR>]], { noremap = true })
+vim.keymap.set("n", "-", [[<Cmd>horizontal resize -2<CR>]], { noremap = true })
+
 
 return keymaps

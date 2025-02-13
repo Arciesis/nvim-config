@@ -5,6 +5,6 @@ return {
     opts = {
         position = "right",
         width = 50,
-        update_mode = "manual",
+        update_mode = "auto",
     }
 }
