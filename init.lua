@@ -17,9 +17,50 @@ vim.pack.add({
     { src = 'https://github.com/folke/which-key.nvim',                name = 'wk',          version = 'v3.17.0' },
 })
 
+-- see https://neovim.io/doc/user/options.html
+-- global options
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
-local options = require('lua.options')
-local km = require('lua.keymaps')
+-- all options (not all actually but the more important imo)
+vim.opt.backup = false
+vim.opt.clipboard = "unnamedplus"
+vim.opt.cmdheight = 1
+vim.opt.foldmethod = "manual"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.hidden = true
+vim.opt.hlsearch = true
+vim.opt.ignorecase = true
+vim.opt.mouse = "nv"
+vim.opt.pumheight = 5
+vim.opt.showmode = false
+vim.opt.smartcase = true
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+vim.opt.swapfile = false
+vim.opt.termguicolors = true
+vim.opt.timeoutlen = 250
+vim.opt.undofile = true
+vim.opt.updatetime = 100
+vim.opt.writebackup = false
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.cursorline = true
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.numberwidth = 4
+vim.opt.signcolumn = "yes"
+vim.opt.wrap = true
+vim.opt.textwidth = 80
+vim.opt.linebreak = true;
+vim.opt.scrolloff = 5
+vim.opt.showcmd = true
+vim.opt.ruler = true
+vim.opt.laststatus = 3
+vim.opt.autoindent = true
+vim.opt.syntax = "off"
+vim.opt.termguicolors = true
 
 local truc = os.clock()
 
@@ -141,3 +182,48 @@ vim.lsp.enable('lua_ls')
 vim.lsp.enable('rust-analyzer')
 vim.lsp.enable('zls')
 vim.lsp.enable('clangd')
+
+-- Telescope mappings
+vim.keymap.set("n", "<leader><leader>", [[<CMD>Telescope find_files<CR>]])
+vim.keymap.set("n", "<leader>fb", [[<CMD>Telescope buffers<CR>]])
+vim.keymap.set("n", "<leader>fe", [[<CMD>Telescope live_grep<CR>]])
+vim.keymap.set("n", "<leader>fh", [[<CMD>Telescope help_tags<CR>]])
+vim.keymap.set("n", "<leader>fq", [[<CMD>Telescope quickfix<CR>]])
+vim.keymap.set("n", "<leader>fd", [[<CMD>Telescope diagnostics<CR>]])
+vim.keymap.set("n", "<leader>ft", [[<CMD>Telescope todo<CR>]])
+
+-- window keymaps
+vim.keymap.set("n", "<C-h>", [[<Cmd>wincmd h<CR>]])
+vim.keymap.set("n", "<A-j>", [[<Cmd>wincmd j<CR>]])
+vim.keymap.set("n", "<A-k>", [[<Cmd>wincmd k<CR>]])
+vim.keymap.set("n", "<C-l>", [[<Cmd>wincmd l<CR>]])
+
+-- lazyygit
+vim.keymap.set("n", "<leader>g", [[<CMD>LazyGit<CR>]])
+
+-- creation on an autocmd to set the keymaps related to a lsp with wichkey
+-- Use LspAttach autocommand to only map the following keys
+-- after the language server attaches to the current buffer
+vim.api.nvim_create_autocmd('LspAttach', {
+   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+   callback = function(ev)
+      -- Enable completion triggered by <c-x><c-o>
+      vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
+      -- Buffer local mappings.
+      -- See `:help vim.lsp.*` for documentation on any of the below functions
+      local opts = { buffer = ev.buf }
+      --  set_lsp_buffer_keymaps(opts)
+      vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = opts.buffer, desc = "Go to declaration" })
+      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = opts.buffer, desc = "Go to definition" })
+      vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = opts.buffer, desc = "Doc hover" })
+      vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = opts.buffer, desc = "Go to implementation" })
+      -- vim.keymap.set('n', '<c-k>', vim.lsp.buf.signature_help, { buffer = opts.buffer, desc = "Signature hover" })
+      vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = opts.buffer, desc = "Rename" })
+      vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, { buffer = opts.buffer, desc = "Code action" })
+      vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = opts.buffer, desc = "Go to references" })
+      vim.keymap.set('n', '<leader>cf', function()
+         vim.lsp.buf.format { async = true }
+      end, { buffer = opts.buffer, desc = "Format" })
+   end,
+})
