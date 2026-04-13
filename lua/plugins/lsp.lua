@@ -20,7 +20,7 @@ return {
 
       config = function(_, _)
          require("mason-lspconfig").setup({
-            ensure_installed = { "lua_ls", "rust_analyzer", "clangd", "arduino_language_server" },
+            ensure_installed = { "lua_ls", "rust_analyzer", "clangd", "arduino_language_server", "gopls" },
          })
          require("lspconfig")
       end,
@@ -75,7 +75,7 @@ return {
          })
 
          lspconfig.pylsp.setup({})
-
+         lspconfig.gopls.setup({})
          lspconfig.bashls.setup({})
          lspconfig.cssls.setup({})
          lspconfig.zls.setup({})
