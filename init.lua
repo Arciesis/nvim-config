@@ -1,5 +1,6 @@
 vim.pack.add({
-    { src = 'https://github.com/tanvirtin/monokai.nvim',              name = 'monokai' },
+    { src = 'https://github.com/connorholyday/vim-snazzy',            name = 'snazzy' },
+    { src = 'https://github.com/tssm/fairyfloss.vim',                 name = 'fairyfloss' },
     { src = 'https://github.com/neovim/nvim-lspconfig',               name = 'lspconfig' },
     { src = 'https://github.com/mason-org/mason.nvim',                name = 'mason',       version = 'v2.2.1' },
     { src = 'https://github.com/lukas-reineke/indent-blankline.nvim', name = 'blankline' },
@@ -15,12 +16,16 @@ vim.pack.add({
     { src = 'https://github.com/j-hui/fidget.nvim' },
     { src = 'https://github.com/folke/flash.nvim',                    name = 'flash',       version = 'v2.1.0' },
     { src = 'https://github.com/folke/which-key.nvim',                name = 'wk',          version = 'v3.17.0' },
+    { src = 'https://github.com/lervag/vimtex',                       name = 'vimtex',      version = 'v2.17' },
 })
+
+vim.cmd('colo snazzy')
 
 -- see https://neovim.io/doc/user/options.html
 -- global options
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+vim.o.winborder = 'rounded'
 
 -- all options (not all actually but the more important imo)
 vim.opt.backup = false
@@ -38,7 +43,6 @@ vim.opt.smartcase = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.swapfile = false
-vim.opt.termguicolors = true
 vim.opt.timeoutlen = 250
 vim.opt.undofile = true
 vim.opt.updatetime = 100
@@ -62,12 +66,26 @@ vim.opt.autoindent = true
 vim.opt.syntax = "off"
 vim.opt.termguicolors = true
 
-local truc = os.clock()
 
 local todos = require('todo-comments').setup({})
-local monokai = require('monokai').setup(require('monokai').soda)
 local lspconfig = require('lspconfig')
 local mason = require('mason').setup()
+require('fidget').setup({})
+
+vim.g.vimtex_general_viewer_method = 'okular'
+vim.g.vimtex_compiler_method = 'latexmk'
+vim.g.vimtex_compiler_latexmk = {
+    options = {
+        '-shell-escape',
+        -- '-file-line-error',
+        '-synctex=1',
+        '-interaction=nonstopmode',
+        '-silent',
+        '-pvc',
+        '-output-directory=build/',
+
+    },
+}
 
 --@TODO: map C-jk to down,up not C-pn
 local telescope = require('telescope').setup({
@@ -112,9 +130,10 @@ hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_ex
 local blankline = require('ibl').setup({
     indent = { highlight = highlight }
 })
+
 local lualine = require('lualine').setup({
     options = {
-        theme = "horizon",
+        theme = "auto",
     },
     sections = {
         lualine_c = {
@@ -124,24 +143,6 @@ local lualine = require('lualine').setup({
     },
 })
 
-vim.lsp.config['lua_ls'] = {
-    cmd = { 'lua-language-server' },
-    -- Filetypes to automatically attach to.
-    filetypes = { 'lua' },
-    -- Sets the "workspace" to the directory where any of these files is found.
-    -- Files that share a root directory will reuse the LSP server connection.
-    -- Nested lists indicate equal priority, see |vim.lsp.Config|.
-    root_markers = { { '.luarc.json', '.luarc.jsonc' }, '.git' },
-    -- Specific settings to send to the server. The schema is server-defined.
-    -- Example: https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json
-    settings = {
-        Lua = {
-            runtime = {
-                version = 'LuaJIT',
-            }
-        }
-    }
-}
 
 require('blink.cmp').setup({
     completion = {
@@ -153,6 +154,7 @@ require('blink.cmp').setup({
             },
         },
     },
+    signature = { enabled =  true },
     keymap = {
         preset = 'none',
         ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
@@ -178,10 +180,6 @@ require('flash').setup({
     },
 })
 
-vim.lsp.enable('lua_ls')
-vim.lsp.enable('rust-analyzer')
-vim.lsp.enable('zls')
-vim.lsp.enable('clangd')
 
 -- Telescope mappings
 vim.keymap.set("n", "<leader><leader>", [[<CMD>Telescope find_files<CR>]])
@@ -205,25 +203,37 @@ vim.keymap.set("n", "<leader>g", [[<CMD>LazyGit<CR>]])
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
 vim.api.nvim_create_autocmd('LspAttach', {
-   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-   callback = function(ev)
-      -- Enable completion triggered by <c-x><c-o>
-      vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+    group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+    callback = function(ev)
+        -- Enable completion triggered by <c-x><c-o>
+        vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-      -- Buffer local mappings.
-      -- See `:help vim.lsp.*` for documentation on any of the below functions
-      local opts = { buffer = ev.buf }
-      --  set_lsp_buffer_keymaps(opts)
-      vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = opts.buffer, desc = "Go to declaration" })
-      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = opts.buffer, desc = "Go to definition" })
-      vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = opts.buffer, desc = "Doc hover" })
-      vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = opts.buffer, desc = "Go to implementation" })
-      -- vim.keymap.set('n', '<c-k>', vim.lsp.buf.signature_help, { buffer = opts.buffer, desc = "Signature hover" })
-      vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = opts.buffer, desc = "Rename" })
-      vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, { buffer = opts.buffer, desc = "Code action" })
-      vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = opts.buffer, desc = "Go to references" })
-      vim.keymap.set('n', '<leader>cf', function()
-         vim.lsp.buf.format { async = true }
-      end, { buffer = opts.buffer, desc = "Format" })
-   end,
+        -- Buffer local mappings.
+        -- See `:help vim.lsp.*` for documentation on any of the below functions
+        local opts = { buffer = ev.buf }
+        --  set_lsp_buffer_keymaps(opts)
+        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = opts.buffer, desc = "Go to declaration" })
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = opts.buffer, desc = "Go to definition" })
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = opts.buffer, desc = "Doc hover" })
+        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = opts.buffer, desc = "Go to implementation" })
+        -- vim.keymap.set('n', '<c-k>', vim.lsp.buf.signature_help, { buffer = opts.buffer, desc = "Signature hover" })
+        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = opts.buffer, desc = "Rename" })
+        vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action,
+            { buffer = opts.buffer, desc = "Code action" })
+        vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = opts.buffer, desc = "Go to references" })
+        vim.keymap.set('n', '<leader>cf', function()
+            vim.lsp.buf.format { async = true }
+        end, { buffer = opts.buffer, desc = "Format" })
+    end,
 })
+
+
+
+
+vim.lsp.enable('lua_ls')
+vim.lsp.enable('rust_analyzer')
+vim.lsp.enable('zls')
+vim.lsp.enable('clangd')
+vim.lsp.enable('vtsls')
+vim.lsp.enable('pylsp')
+vim.lsp.enable('ltex-cli-plus')
