@@ -1,22 +1,24 @@
 vim.pack.add({
-    { src = 'https://github.com/connorholyday/vim-snazzy',            name = 'snazzy' },
-    { src = 'https://github.com/tssm/fairyfloss.vim',                 name = 'fairyfloss' },
-    { src = 'https://github.com/neovim/nvim-lspconfig',               name = 'lspconfig' },
-    { src = 'https://github.com/mason-org/mason.nvim',                name = 'mason',       version = 'v2.2.1' },
-    { src = 'https://github.com/lukas-reineke/indent-blankline.nvim', name = 'blankline' },
-    { src = 'https://github.com/folke/todo-comments.nvim',            name = 'todos' },
-    { src = 'https://github.com://kdheepak/lazygit.nvim',             name = 'lazygit' },
-    { src = 'https://github.com/nvim-lualine/lualine.nvim',           name = 'lualine' },
-    { src = 'https://github.com/lewis6991/gitsigns.nvim',             name = 'gitsigns' },
-    { src = 'https://github.com/nvim-lua/plenary.nvim',               name = 'plenary' },
-    { src = 'https://github.com/nvim-tree/nvim-web-devicons',         name = 'web-devicons' },
-    { src = 'https://github.com/nvim-telescope/telescope.nvim',       name = 'telescope',   version = 'f7c673b8e46e8f233ff581d3624a517d33a7e264' },
-    { src = 'https://github.com/saghen/blink.cmp',                    name = 'blink',       version = 'v1.10.2' },
+    { src = 'https://github.com/connorholyday/vim-snazzy',                  name = 'snazzy' },
+    { src = 'https://github.com/tssm/fairyfloss.vim',                       name = 'fairyfloss' },
+    { src = 'https://github.com/neovim/nvim-lspconfig',                     name = 'lspconfig' },
+    { src = 'https://github.com/mason-org/mason.nvim',                      name = 'mason',       version = 'v2.2.1' },
+    { src = 'https://github.com/lukas-reineke/indent-blankline.nvim',       name = 'blankline' },
+    { src = 'https://github.com/folke/todo-comments.nvim',                  name = 'todos' },
+    { src = 'https://github.com://kdheepak/lazygit.nvim',                   name = 'lazygit' },
+    { src = 'https://github.com/nvim-lualine/lualine.nvim',                 name = 'lualine' },
+    { src = 'https://github.com/lewis6991/gitsigns.nvim',                   name = 'gitsigns' },
+    { src = 'https://github.com/nvim-lua/plenary.nvim',                     name = 'plenary' },
+    { src = 'https://github.com/nvim-tree/nvim-web-devicons',               name = 'web-devicons' },
+    { src = 'https://github.com/nvim-telescope/telescope.nvim',             name = 'telescope',   version = 'f7c673b8e46e8f233ff581d3624a517d33a7e264' },
+    { src = 'https://github.com/saghen/blink.cmp',                          name = 'blink',       version = 'v1.10.2' },
     { src = 'https://github.com/kylechui/nvim-surround' },
     { src = 'https://github.com/j-hui/fidget.nvim' },
-    { src = 'https://github.com/folke/flash.nvim',                    name = 'flash',       version = 'v2.1.0' },
-    { src = 'https://github.com/folke/which-key.nvim',                name = 'wk',          version = 'v3.17.0' },
-    { src = 'https://github.com/lervag/vimtex',                       name = 'vimtex',      version = 'v2.17' },
+    { src = 'https://github.com/folke/flash.nvim',                          name = 'flash',       version = 'v2.1.0' },
+    { src = 'https://github.com/folke/which-key.nvim',                      name = 'wk',          version = 'v3.17.0' },
+    { src = 'https://github.com/lervag/vimtex',                             name = 'vimtex',      version = 'v2.17' },
+    { src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
+    { src = 'https://github.com/MeanderingProgrammer/render-markdown.nvim', name = 'rmd',         version = 'v8.13.0' },
 })
 
 vim.cmd('colo snazzy')
@@ -55,10 +57,10 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.numberwidth = 4
 vim.opt.signcolumn = "yes"
-vim.opt.wrap = true
+vim.opt.wrap = false
 vim.opt.textwidth = 80
 vim.opt.linebreak = true;
-vim.opt.scrolloff = 5
+vim.opt.scrolloff = 10
 vim.opt.showcmd = true
 vim.opt.ruler = true
 vim.opt.laststatus = 3
@@ -154,7 +156,8 @@ require('blink.cmp').setup({
             },
         },
     },
-    signature = { enabled =  true },
+    signature = { enabled = true },
+    sources = { default = {'lsp', 'path', 'buffer' }, },
     keymap = {
         preset = 'none',
         ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
@@ -234,6 +237,9 @@ vim.lsp.enable('lua_ls')
 vim.lsp.enable('rust_analyzer')
 vim.lsp.enable('zls')
 vim.lsp.enable('clangd')
+vim.filetype.add({
+    extension = { h = 'c', },
+})
 vim.lsp.enable('vtsls')
 vim.lsp.enable('pylsp')
 vim.lsp.enable('ltex-cli-plus')
