@@ -154,7 +154,7 @@ require('blink.cmp').setup({
             },
         },
     },
-    signature = { enabled =  true },
+    signature = { enabled = true },
     keymap = {
         preset = 'none',
         ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
@@ -237,3 +237,19 @@ vim.lsp.enable('clangd')
 vim.lsp.enable('vtsls')
 vim.lsp.enable('pylsp')
 vim.lsp.enable('ltex-cli-plus')
+
+vim.keymap.set('n', '<leader>bb', ':mak<cr><cr>')
+vim.keymap.set('n', '<leader>br', ':mak run<cr><cr>')
+-- :mak auto opens quickfix
+vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+  pattern = "[^l]*", -- triggers on :make, :grep, etc. (excludes location lists)
+  nested = true,
+  callback = function()
+    if #vim.fn.getqflist() > 0 then
+      vim.cmd("copen")
+    else
+      vim.cmd("cclose")
+      vim.notify("Build succeeded!")
+    end
+  end,
+})
