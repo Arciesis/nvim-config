@@ -89,8 +89,7 @@ vim.g.vimtex_compiler_latexmk = {
     },
 }
 
---@TODO: map C-jk to down,up not C-pn
-local telescope = require('telescope').setup({
+require('telescope').setup({
     defaults = {
         extensions = {
             fzf = {
@@ -157,7 +156,7 @@ require('blink.cmp').setup({
         },
     },
     signature = { enabled = true },
-    sources = { default = {'lsp', 'path', 'buffer' }, },
+    sources = { default = { 'lsp', 'path' }, },
     keymap = {
         preset = 'none',
         ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
@@ -202,6 +201,12 @@ vim.keymap.set("n", "<C-l>", [[<Cmd>wincmd l<CR>]])
 -- lazyygit
 vim.keymap.set("n", "<leader>g", [[<CMD>LazyGit<CR>]])
 
+-- zig go to with tags
+-- vim.keymap.set("n", "gd", "<C-]>")
+-- vim.keymap.set("n", "gr", ":tag<CR>")
+-- vim.keymap.set("n", "K", "<C-w>}")
+-- vim.keymap.set("n", "<C-t>", "<C-t>")
+
 -- creation on an autocmd to set the keymaps related to a lsp with wichkey
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
@@ -230,9 +235,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end,
 })
 
-
-
-
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('rust_analyzer')
 vim.lsp.enable('zls')
@@ -248,14 +250,14 @@ vim.keymap.set('n', '<leader>bb', ':mak<cr><cr>')
 vim.keymap.set('n', '<leader>br', ':mak run<cr><cr>')
 -- :mak auto opens quickfix
 vim.api.nvim_create_autocmd("QuickFixCmdPost", {
-  pattern = "[^l]*", -- triggers on :make, :grep, etc. (excludes location lists)
-  nested = true,
-  callback = function()
-    if #vim.fn.getqflist() > 0 then
-      vim.cmd("copen")
-    else
-      vim.cmd("cclose")
-      vim.notify("Build succeeded!")
-    end
-  end,
+    pattern = "[^l]*", -- triggers on :make, :grep, etc. (excludes location lists)
+    nested = true,
+    callback = function()
+        if #vim.fn.getqflist() > 0 then
+            vim.cmd("copen")
+        else
+            vim.cmd("cclose")
+            vim.notify("Build succeeded!")
+        end
+    end,
 })
