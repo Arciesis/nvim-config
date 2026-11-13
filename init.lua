@@ -19,6 +19,7 @@ vim.pack.add({
     { src = 'https://github.com/lervag/vimtex',                             name = 'vimtex',      version = 'v2.17' },
     { src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
     { src = 'https://github.com/MeanderingProgrammer/render-markdown.nvim', name = 'rmd',         version = 'v8.13.0' },
+    { src = 'https://github.com/Mathijs-Bakker/godotdev.nvim',              name = 'godotdev',    version = '0.8.4' },
 })
 
 vim.cmd('colo snazzy')
