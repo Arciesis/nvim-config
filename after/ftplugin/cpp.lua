@@ -1,69 +1,64 @@
--- Wrap this in a FileType autocmd so it only applies to C/C++ buffers,
--- keeping your Zig environment completely separate.
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "c", "cpp" },
-    callback = function(args)
-        local bufnr = args.buf
+vim.opt_local.makeprg = "cmake -B build -G Ninja && ninja -C build"
 
-        -- 1. Set makeprg to compile the Wicked Engine project via CMake/Ninja
-        vim.bo[bufnr].makeprg = "cmake --build build"
+-- 2. Safely ignore Ninja progress spam
+-- local ninja_errfmt = "%-G[%*[^]]] %m," ..
+--                      "%-Gninja: build stopped: subcommand failed.," ..
+--                      "%-GFAILED: %m,"
 
-        -- 2. Clean up the Quickfix by ignoring Ninja build system spam.
-        -- We append this to the existing default Clang/GCC errorformat.
-        local ninja_ignores = "%-G[%d/%d] %m," ..             -- Ignore "[1/5] Building..."
-            "%-Gninja: build stopped: subcommand failed.," .. -- Ignore failure summary
-            "%-GFAILED: %m,"                                  -- Ignore failed target lines
+vim.opt_local.errorformat = table.concat({
+    "%Dninja: Entering directory %*[`']%f'",
+    "%-Gninja: build stopped%.%#",
+    "%-G[%*[0-9]/%*[0-9]] %.%#",
+    "%-GFAILED: %.%#",
+    "%f:%l:%c: %trror: %m,",    -- Capture Error line & col
+    "%f:%l:%c: %tarning: %m,",  -- Capture Warning line & col
+    "%f:%l:%c: %tote: %m,",     -- Capture Note line & col
+    "%f:%l:%c: %m,",            -- Fallback: file:line:col
+    "%f:%l: %m"                 -- Fallback: file:line
+}, ",")
 
-        vim.bo[bufnr].errorformat = ninja_ignores .. vim.bo[bufnr].errorformat
+local group = vim.api.nvim_create_augroup("CppMake", { clear = false })
+local bufnr = vim.api.nvim_get_current_buf()
 
-        -- Helper function to check if the quickfix window is open
-        local function is_quickfix_open()
-            for _, win in ipairs(vim.fn.getwininfo()) do
-                if win.quickfix == 1 and win.loclist == 0 then
-                    return true
-                end
-            end
-            return false
-        end
+local function is_quickfix_open()
+    for _, win in ipairs(vim.fn.getwininfo()) do
+        if win.quickfix == 1 and win.loclist == 0 then return true end
+    end
+    return false
+end
 
-        -- 3. Re-run :make! on save ONLY if the quickfix window is open
-        vim.api.nvim_create_autocmd("BufWritePost", {
-            buffer = bufnr,
-            callback = function()
-                if is_quickfix_open() then
-                    -- Use :silent make! to rebuild without prompting to press ENTER
-                    vim.cmd("silent make!")
-                    vim.cmd("redraw!")
-                end
-            end,
-        })
-    end,
-})
-
--- 4. Global Quickfix toggler.
--- Keep this outside the FileType block. Because it triggers on "QuickFixCmdPost",
--- it will seamlessly handle both your Zig and C++ builds identically.
-vim.api.nvim_create_autocmd("QuickFixCmdPost", {
-    pattern = "[^l]*",
-    nested = true,
+vim.api.nvim_clear_autocmds({ group = group, buffer = bufnr })
+vim.api.nvim_create_autocmd("BufWritePost", {
+    group = group,
+    buffer = bufnr,
     callback = function()
-        local qf = vim.fn.getqflist()
-        local has_errors = false
-
-        for _, item in ipairs(qf) do
-            -- Clang/GCC linker errors (like "undefined reference") sometimes lack line numbers,
-            -- but Neovim's default errorformat still tags them as valid=1.
-            if item.valid == 1 then
-                has_errors = true
-                break
-            end
-        end
-
-        if has_errors then
-            vim.cmd("copen")
-        else
-            vim.cmd("cclose")
-            vim.notify("All C++ errors resolved! Built successfully.", vim.log.levels.INFO)
+        if is_quickfix_open() then
+            vim.cmd("silent make!")
+            vim.cmd("redraw!")
         end
     end,
 })
+
+vim.opt_local.shellpipe = "2>&1 | tee %s; exit ${PIPESTATUS[0]}"
+
+if not vim.g.cpp_make_qf_hook then
+    vim.g.cpp_make_qf_hook = true
+    vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+        group = group,
+        pattern = "make",
+        nested = true,
+        callback = function()
+            -- v:shell_error is the exit status of `tee`, so count real errors instead
+            local errors = vim.tbl_filter(function(item)
+                return item.valid == 1 and item.type ~= "W" and item.type ~= "I" and item.type ~= "N"
+            end, vim.fn.getqflist())
+
+            if #errors > 0 or vim.v.shell_error ~= 0 then
+                vim.cmd("copen")
+            else
+                vim.cmd("cclose")
+                vim.notify("Build OK", vim.log.levels.INFO)
+            end
+        end,
+    })
+end
